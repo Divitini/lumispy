@@ -22,7 +22,7 @@ exec(open('lumispy/release_info.py').read())  # grab version info
 
 
 setup(
-    name='LuminescenceSpectroscopyHyperSpyExtension',
+    name='lumispy',
     version='0.1.0',
     description='Luminescence spectroscopy data analysis with HyperSpy.',
     author='The LumiSpy Developers',
@@ -34,6 +34,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Development Status :: 4 - Beta",
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
@@ -55,6 +56,6 @@ setup(
     entry_points={'hyperspy.extensions': ['lumispy = lumispy']},
     project_urls={  # Optional
         'Bug Reports': 'https://github.com/lumispy/lumispy/issues',
-        'Source': 'https://github.com/lumispy/lumispy/sampleproject/',
+        'Source': 'https://github.com/lumispy/lumispy',
     },
     )

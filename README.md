@@ -5,7 +5,7 @@
 LumiSpy is an extension Python package for multi-dimensional data analysis 
 provided by the [HyperSpy](http://hyperspy.org) library. It is aimed at helping 
 with the analysis of luminescence spectroscopy data (cathodoluminescence, 
-photoluminescence and electroluminescence).
+photoluminescence, electroluminescence, Raman, SNOM).
 
 LumiSpy is released under the GPL v3 license. 
 
@@ -47,7 +47,7 @@ source code.
 ```
     $ cd PATH_TO_SOURCE_CODE
     $ conda activate lumispy
-    $ pip install . -y
+    $ pip install .
 ```
 
 Installation is completed! To start using it, check the next section.
