@@ -223,7 +223,7 @@ def file_reader(filename, *args, **kwds):
 
         # Get relevant parameters from metadata and acquisition_systems
         # parameters
-        acquisition_system \
+        attolight_acquisition_system \
             = cl_object.metadata.Acquisition_instrument.acquisition_system
         cal_factor_x_axis \
             = attolight_systems[attolight_acquisition_system]['cal_factor_x_axis']
@@ -244,39 +244,27 @@ def file_reader(filename, *args, **kwds):
 
         return cl_object
 
-    def _save_background(cl_object, hypcard_folder, background_file_name='Background*.txt'):
+    def _save_background_metadata(cl_object, hypcard_folder, background_file_name='Background*.txt'):
         """
         Based on the Attolight background savefunction.
-        If background is found in the folder, it saves background as a cl_object.background attribute.
-
-        Returns
-        ----------
-        cl_object:
-            With the background saved as a background attribute.
+        If background is found in the folder, it saves background as in the metadata.
         """
         # Get the absolute path
         path = os.path.join(hypcard_folder, background_file_name)
+
         # Try to load the file, if it exists.
         try:
             # Find the exact filename, using the * wildcard
             path = glob.glob(path)[0]
             # Load the file as a numpy array
             bkg = np.loadtxt(path)
-            # Extract only the  signal axis
-            # ERROR from AttoLight bug
-            bkg = bkg[1]
-            # Retrieve the correct x axis from the cl_object
-            # ERROR from AttoLight bug
-            x_axis = cl_object.axes_manager.signal_axes[0].axis
-            # Join x axis with bkg signal
-            background = [x_axis, bkg]
-            # Store the value as background attribute
-            cl_object.background = background
+            # The bkg file contains [wavelength, background]
+            cl_object.metadata.set_item("Signal.background", bkg)
+            return cl_object
+        except:
+            cl_object.metadata.set_item("Signal.background", None)
             return cl_object
 
-        # If file does not exist, return function
-        except:
-            return
 
     #################################
 
@@ -324,15 +312,16 @@ def file_reader(filename, *args, **kwds):
     _store_metadata(s, hypcard_folder, metadata_file_name, attolight_acquisition_system)
 
     # Add name as metadata
+    experiment_name = os.path.basename(hypcard_folder)
     if attolight_acquisition_system == 'cambridge_attolight':
-        # Import file name
-        experiment_name = os.path.basename(hypcard_folder)
         # CAUTION: Specifically delimeted by Attolight default naming system
-        try:
+        if len(experiment_name) > 37:
             name = experiment_name[:-37]
-        except:
+        else:
             name = experiment_name
-        s.metadata.General.title = name
+    else:
+        name = experiment_name
+    s.metadata.General.title = name
 
     # Calibrate navigation axis
     _calibrate_navigation_axis(s)
@@ -341,7 +330,7 @@ def file_reader(filename, *args, **kwds):
     _calibrate_signal_axis_wavelength(s)
 
     # Save background file if exisent (after calibrating signal axis)
-    _save_background(s, hypcard_folder)
+    _save_background_metadata(s, hypcard_folder,)
 
     return s
 
