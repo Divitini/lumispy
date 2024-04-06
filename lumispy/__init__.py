@@ -1,49 +1,41 @@
 # -*- coding: utf-8 -*-
-# Copyright 2019 The LumiSpy developers
+# Copyright 2019-2023 The LumiSpy developers
 #
 # This file is part of LumiSpy.
 #
 # LumiSpy is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
+# the Free Software Foundation, either version 3 of the license, or
 # (at your option) any later version.
 #
 # LumiSpy is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with LumiSpy.  If not, see <http://www.gnu.org/licenses/>.
+# along with LumiSpy. If not, see <https://www.gnu.org/licenses/#GPL>.
 
 
 import logging
 
-from hyperspy.io import load as hyperspyload
+_logger = logging.getLogger(__name__)
 
-import numpy as np
+from lumispy.utils.axes import nm2eV, eV2nm, nm2invcm, invcm2nm, join_spectra
+from lumispy.utils.io import to_array, savetxt
 
-from natsort import natsorted
-
-from .signals.luminescence_spectrum import LumiSpectrum
-from .signals.cl_spectrum import CLSpectrum
-from .signals.cl_sem_spectrum import CLSEMSpectrum
-from .signals.cl_stem_spectrum import CLSTEMSpectrum
-from .signals.pl_spectrum import PLSpectrum
-from .signals.el_spectrum import ELSpectrum
-from .signals.luminescence_transient import LumiTransient
-
-from .signals.luminescence_spectrum import LazyLumiSpectrum
-from .signals.cl_spectrum import LazyCLSpectrum
-from .signals.cl_sem_spectrum import LazyCLSEMSpectrum
-from .signals.cl_stem_spectrum import LazyCLSTEMSpectrum
-from .signals.pl_spectrum import LazyPLSpectrum
-from .signals.el_spectrum import LazyELSpectrum
-from .signals.luminescence_transient import LazyLumiTransient
-
-from .io import load
+from lumispy import signals
+from lumispy import components
+from lumispy import utils
 
 from . import release_info
+
+
+__all__ = [
+    "components",
+    "signals",
+    "utils",
+]
 
 __version__ = release_info.version
 __author__ = release_info.author
@@ -53,6 +45,3 @@ __license__ = release_info.license
 __maintainer__ = release_info.maintainer
 __email__ = release_info.email
 __status__ = release_info.status
-
-_logger = logging.getLogger(__name__)
-
